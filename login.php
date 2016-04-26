@@ -1,4 +1,6 @@
 <?php
+    $LAUNCH = LTIX::session_start();
+
     session_start();
     if ( isset($_POST["user_email"]) && isset($_POST["pw"]) ) {
         unset($_SESSION["user_email"]);  // Logout current user
@@ -12,7 +14,7 @@
             header( 'Location: login.php' ) ;
             return;
         }
-    }      
+    }
 ?>
 <html>
 <head>

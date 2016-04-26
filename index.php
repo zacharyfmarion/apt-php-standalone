@@ -1,10 +1,48 @@
 <?php
 
 require_once "config.php";
+require_once "parsegrade.php";
+require_once "APT.php";
+
+// print_r($CFG->tool_folders);
 
 use \Tsugi\Core\LTIX;
 
+//$PDOX = LTIX::getConnection();
 $LAUNCH = LTIX::session_start();
+
+$doc = '<html><head><title>APT: bmi</title>
+<link rel="stylesheet" type="text/css" href="topstyle.css">
+<style type="text/css"></style></head><body bgcolor="#ffffff" text="#000000">
+
+<b>Problem</b>: bmi<br>
+<b>Language</b>: python<br>
+<b>Files</b>: BMI.py<br>Number of APT runs this session is: 3<p>user is: anonymous user</p><p></p><p>upload ok, files moved: BMI.py
+</p><p>Compiling...</p><p>compile succeeded</p><p><b>Program running:</b> standard output below</p><p>(if you don\'t see output immediately, wait ... your<br>code may have time-limit exceeded problems)<br></p><hr><pre></pre><hr><p>
+<b>Test Results Follow (scroll to see all)</b></p><p><p>
+<!-- ALLPASS_XYZ --></p><p>
+# of correct: 4 out of 4
+</p><table class="border" <tr=""><tbody><tr><td class="count">1</td><td class="pass">pass</td></tr>
+<tr><td class="count">2</td><td class="pass">pass</td></tr>
+<tr><td class="count">3</td><td class="pass">pass</td></tr>
+<tr><td class="count">4</td><td class="pass">pass</td></tr>
+<!--PERC:1.0000 --><tr><td class="count">1</td><td class="pass">pass</td><td>got<br><pre> 39.0594166667</pre>: 200.0 60.0 </td>
+</tr><tr><td class="count">2</td><td class="pass">pass</td><td>got<br><pre> 23.0559056713</pre>: 170.0 72.0 </td>
+</tr><tr><td class="count">3</td><td class="pass">pass</td><td>got<br><pre> 17.2180285714</pre>: 120.0 70.0 </td>
+</tr><tr><td class="count">4</td><td class="pass">pass</td><td>got<br><pre> 62.5729352083</pre>: 250.0 53.0 </td>
+
+
+</tr></tbody></table>
+logged entry</p><p>
+</p></body></html>
+';
+
+# Create grader object
+$user = APT::getUser($doc);
+$problem = APT::getProblem($doc);
+$grade = APT::getGrade($doc);
+
+echo('Problem: '.$problem.', grade: '.$grade.', user: '.$user);
 
 ?>
 <html><head><title>Tsugi Sample Standalone Application</title></head>
@@ -36,9 +74,9 @@ for logging in.  Here are some things you can do:
 <li>Send an LTI launch to this file (index.php)</li>
 <li>Send an LTI launch to <a href="launch.php" target="_blank">launch.php</a> to effect a local login</li>
 <?php if ( isset($LAUNCH->user) && !isset($_SESSION['user_email']) ) { ?>
-<li>Since you <b>do</b> have LTI launch  in your session and <b>do not</b> 
-have local login data in your session, 
-you can navigate to <a href="launch.php" target="_blank">launch.php</a> 
+<li>Since you <b>do</b> have LTI launch  in your session and <b>do not</b>
+have local login data in your session,
+you can navigate to <a href="launch.php" target="_blank">launch.php</a>
 to effect a local login using LTI launch data
 that is already in your session.</li>
 <?php } ?>
@@ -47,7 +85,7 @@ that is already in your session.</li>
 <p>
 Current situation:
 <ul>
-<li>Local user email: 
+<li>Local user email:
 <?= isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '<span style="color:red">Not logged in</span>' ?></li>
 <li>LTI user email:
 <?= isset($LAUNCH->user) ? $LAUNCH->user->email : '<span style="color:red">No LTI Email Address</span>' ?></li>
